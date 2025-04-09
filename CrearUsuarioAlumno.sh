@@ -11,9 +11,29 @@ if id $usr &> /dev/null; then
 	exit 1
 fi
 
-sudo useradd -m $usr
+sudo useradd -m $usr 
+if grep -q "^$usr" /etc/passwd; then
+	echo "Usuario creado con éxito"
+else
+	echo "ERROR: al crear el usuario"
+	exit 0
+fi
 
-sudo groupadd $group
+if ! echo "$usr:$psw" | chpasswd &> /dev/null; then
+	echo "ERROR: al asignar contraseña al usuario nuevo"
+else
+	echo "Contraseña asignada para el nuevo usuario con éxito"
+fi
 
-sudo usermod -ag $group
+if ! sudo groupadd $group &> /dev/null; then
+	echo "ERROR: al crear el nuevo grupo"
+else
+	echo "Nuevo grupo creado con éxito"
+fi
+
+if ! sudo usermod -ag $group $usr &> /dev/null; then
+	echo "ERROR: al añadir el nuevo grupo al usuario"
+else
+	echo "Grupo añadido al usuario con exito"
+fi
 
