@@ -19,7 +19,7 @@ else
 	exit 0
 fi
 
-if ! echo "$usr:$psw" | chpasswd &> /dev/null; then
+if ! echo "$usr:$psw" | sudo chpasswd &> /dev/null; then
 	echo "ERROR: al asignar contraseña al usuario nuevo"
 else
 	echo "Contraseña asignada para el nuevo usuario con éxito"
@@ -31,7 +31,7 @@ else
 	echo "Nuevo grupo creado con éxito"
 fi
 
-if ! sudo usermod -ag $group $usr &> /dev/null; then
+if ! sudo usermod -aG $group $usr &> /dev/null; then
 	echo "ERROR: al añadir el nuevo grupo al usuario"
 else
 	echo "Grupo añadido al usuario con exito"
